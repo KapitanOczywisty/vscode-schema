@@ -1,0 +1,375 @@
+{
+  "$schema": "./vscode.schema.json",
+  "$id": "./vscode-strict-compat.schema.json",
+  "$comment": "This is modified schema for use with Visual Studio Code",
+  "allowComments": false,
+  "allowTrailingCommas": false,
+  "definitions": {
+    "schemaArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#" },
+      "defaultSnippets": [{ "label": "[{}]", "bodyText": "[{$1}]" }]
+    },
+    "nonNegativeInteger": { "type": "integer", "minimum": 0 },
+    "nonNegativeIntegerDefault0": {
+      "allOf": [
+        { "$ref": "#/definitions/nonNegativeInteger" },
+        { "default": 0 }
+      ]
+    },
+    "simpleTypes": {
+      "enum": [
+        "array",
+        "boolean",
+        "integer",
+        "null",
+        "number",
+        "object",
+        "string"
+      ]
+    },
+    "stringArray": {
+      "type": "array",
+      "default": [],
+      "items": { "type": "string" },
+      "uniqueItems": true,
+      "defaultSnippets": [{ "label": "[\"\"]", "bodyText": "[\"$1\"]" }]
+    }
+  },
+  "type": ["object", "boolean"],
+  "title": "Describes a JSON file using a schema. See json-schema.org for more info.",
+  "default": {},
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "The schema to verify this document against",
+      "format": "uri-reference"
+    },
+    "$id": {
+      "type": "string",
+      "description": "A unique identifier for the schema.",
+      "format": "uri-reference"
+    },
+    "$ref": {
+      "type": "string",
+      "description": "Reference a definition hosted on any location.",
+      "format": "uri-reference"
+    },
+    "$comment": {
+      "type": "string",
+      "description": "Comments from schema authors to readers or maintainers of the schema."
+    },
+    "allowComments": {
+      "type": "boolean",
+      "markdownDescription": "Indicates that the schema can use JavaScript-style comments. Defaults to false.\n\n_Visual Studio Code extension_"
+    },
+    "allowTrailingCommas": {
+      "type": "boolean",
+      "markdownDescription": "Indicates that comma after last item of `array` or `object` is allowed. Defaults to false.\n\n_Visual Studio Code extension_"
+    },
+    "definitions": {
+      "type": "object",
+      "description": "Not used for validation. Place subschemas here that you wish to reference inline with $ref",
+      "default": {},
+      "additionalProperties": { "$ref": "#" }
+    },
+    "type": {
+      "description": "Either a string of one of the basic schema types (number, integer, null, array, object, boolean, string) or an array of strings specifying a subset of those types.",
+      "anyOf": [
+        { "$ref": "#/definitions/simpleTypes" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/simpleTypes" },
+          "uniqueItems": true
+        }
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "A descriptive title of the element"
+    },
+    "description": {
+      "type": "string",
+      "description": "A long description of the element. Used in hover menus and suggestions."
+    },
+    "markdownDescription": {
+      "type": "string",
+      "markdownDescription": "If you use `markdownDescription` instead of `description`, your text will be rendered as Markdown.\n\n_Visual Studio Code extension_"
+    },
+    "default": { "description": "A default value. Used by suggestions." },
+    "readOnly": {
+      "type": "boolean",
+      "description": "Indicates that the value of the instance is managed exclusively by the owning authority.",
+      "default": false
+    },
+    "writeOnly": {
+      "type": "boolean",
+      "description": "Indicates that the value is never present when the instance is retrieved from the owning authority.",
+      "default": false
+    },
+    "pattern": {
+      "type": "string",
+      "description": "A regular expression to match the string against. It is not implicitly anchored.",
+      "format": "regex"
+    },
+    "const": {
+      "description": "An instance validates successfully against this keyword if its value is equal to the value of the keyword."
+    },
+    "format": {
+      "type": "string",
+      "description": "Describes the format expected for the value.",
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": ["date-time", "date", "time", "email", "color-hex"]
+        },
+        {
+          "type": "string",
+          "description": "Format is not validated yet by Visual Studio Code.",
+          "enum": [
+            "idn-email",
+            "hostname",
+            "idn-hostname",
+            "ipv4",
+            "ipv6",
+            "url",
+            "url-reference",
+            "iri",
+            "iri-reference",
+            "uri-template",
+            "json-pointer",
+            "relative-json-pointer",
+            "regex"
+          ]
+        },
+        { "type": "string" }
+      ]
+    },
+    "enum": {
+      "type": "array",
+      "description": "The set of literal values that are valid",
+      "minItems": 1,
+      "items": true,
+      "uniqueItems": true
+    },
+    "enumDescriptions": {
+      "markdownDescription": "A set of descriptions for `enum` values.\n\n_Visual Studio Code extension_",
+      "allOf": [{ "$ref": "#/definitions/stringArray" }]
+    },
+    "markdownEnumDescriptions": {
+      "markdownDescription": "If you use `markdownEnumDescriptions` instead of `enumDescriptions`, your text will be rendered as Markdown.\n\n_Visual Studio Code extension_",
+      "allOf": [{ "$ref": "#/definitions/stringArray" }]
+    },
+    "multipleOf": {
+      "type": "number",
+      "description": "A number that should cleanly divide the current value (i.e. have no remainder)",
+      "exclusiveMinimum": 0
+    },
+    "maximum": {
+      "type": "number",
+      "description": "The maximum numerical value, inclusive."
+    },
+    "exclusiveMaximum": {
+      "type": "number",
+      "description": "The maximum numerical value, exclusive."
+    },
+    "minimum": {
+      "type": "number",
+      "description": "The minimum numerical value, inclusive."
+    },
+    "exclusiveMinimum": {
+      "type": "number",
+      "description": "The minimum numerical value, exclusive."
+    },
+    "maxLength": {
+      "description": "The maximum length of a string.",
+      "allOf": [{ "$ref": "#/definitions/nonNegativeInteger" }]
+    },
+    "minLength": {
+      "description": "The minimum length of a string.",
+      "allOf": [{ "$ref": "#/definitions/nonNegativeIntegerDefault0" }]
+    },
+    "maxItems": {
+      "description": "The maximum number of items that can be inside an array. Inclusive.",
+      "allOf": [{ "$ref": "#/definitions/nonNegativeInteger" }]
+    },
+    "minItems": {
+      "description": "The minimum number of items that can be inside an array. Inclusive.",
+      "allOf": [{ "$ref": "#/definitions/nonNegativeIntegerDefault0" }]
+    },
+    "items": {
+      "description": "For arrays. Can either be a schema to validate every element against or an array of schemas to validate each item against in order (the first schema will validate the first element, the second schema will validate the second element, and so on.",
+      "default": {},
+      "anyOf": [{ "$ref": "#" }, { "$ref": "#/definitions/schemaArray" }]
+    },
+    "additionalItems": {
+      "description": "For arrays, only when items is set as an array. If it is a schema, then this schema validates items after the ones specified by the items array. If it is false, then additional items will cause validation to fail.",
+      "default": {},
+      "allOf": [{ "$ref": "#" }]
+    },
+    "uniqueItems": {
+      "type": "boolean",
+      "description": "If all of the items in the array must be unique. Defaults to false.",
+      "default": false
+    },
+    "contains": {
+      "description": "An array instance is valid against \"contains\" if at least one of its elements is valid against the given schema.",
+      "allOf": [{ "$ref": "#" }]
+    },
+    "maxProperties": {
+      "description": "The maximum number of properties an object can have. Inclusive.",
+      "allOf": [{ "$ref": "#/definitions/nonNegativeInteger" }]
+    },
+    "minProperties": {
+      "description": "The minimum number of properties an object can have. Inclusive.",
+      "allOf": [{ "$ref": "#/definitions/nonNegativeIntegerDefault0" }]
+    },
+    "properties": {
+      "type": "object",
+      "description": "A map of property names to schemas for each property.",
+      "default": {},
+      "additionalProperties": { "$ref": "#" }
+    },
+    "required": {
+      "description": "An array of strings that lists the names of all properties required on this object.",
+      "allOf": [{ "$ref": "#/definitions/stringArray" }]
+    },
+    "patternProperties": {
+      "type": "object",
+      "description": "A map of regular expressions on property names to schemas for matching properties.",
+      "default": {},
+      "additionalProperties": { "$ref": "#" },
+      "propertyNames": { "format": "regex" }
+    },
+    "additionalProperties": {
+      "description": "Either a schema or a boolean. If a schema, then used to validate all properties not matched by 'properties' or 'patternProperties'. If false, then any properties not matched by either will cause this schema to fail.",
+      "default": {},
+      "allOf": [{ "$ref": "#" }]
+    },
+    "propertyNames": {
+      "description": "If the instance is an object, this keyword validates if every property name in the instance validates against the provided schema.",
+      "allOf": [{ "$ref": "#" }]
+    },
+    "dependencies": {
+      "type": "object",
+      "description": "A map of property names to either an array of property names or a schema. An array of property names means the property named in the key depends on the properties in the array being present in the object in order to be valid. If the value is a schema, then the schema is only applied to the object if the property in the key exists on the object.",
+      "additionalProperties": {
+        "anyOf": [{ "$ref": "#" }, { "$ref": "#/definitions/stringArray" }]
+      }
+    },
+    "contentMediaType": {
+      "type": "string",
+      "description": "Describes the media type of a string property."
+    },
+    "contentEncoding": {
+      "type": "string",
+      "description": "Describes the content encoding of a string property."
+    },
+    "errorMessage": {
+      "type": "string",
+      "markdownDescription": "The message will be shown if validation of element fails.\n\n_Visual Studio Code extension_"
+    },
+    "patternErrorMessage": {
+      "type": "string",
+      "markdownDescription": "The message is used as error message if the object is of type string and has a 'pattern' property that does not match the object to validate.\n\n_Visual Studio Code extension_"
+    },
+    "deprecationMessage": {
+      "type": "string",
+      "markdownDescription": "The `deprecationMessage` will mark property as deprecated and show specified warning message. This property also will not be included in completion proposals.\n\n_Visual Studio Code extension_"
+    },
+    "doNotSuggest": {
+      "type": "boolean",
+      "markdownDescription": "Indicates that property should be ignored in completion proposals.\n\n_Visual Studio Code extension_"
+    },
+    "suggestSortText": {
+      "type": "string",
+      "markdownDescription": "The text will be used for sorting completion proposals.\n\n_Visual Studio Code extension_"
+    },
+    "allOf": {
+      "description": "An array of schemas, all of which must match.",
+      "allOf": [{ "$ref": "#/definitions/schemaArray" }]
+    },
+    "anyOf": {
+      "description": "An array of schemas, where at least one must match.",
+      "allOf": [{ "$ref": "#/definitions/schemaArray" }]
+    },
+    "oneOf": {
+      "description": "An array of schemas, exactly one of which must match.",
+      "allOf": [{ "$ref": "#/definitions/schemaArray" }]
+    },
+    "not": {
+      "description": "A schema which must not match.",
+      "allOf": [{ "$ref": "#" }]
+    },
+    "if": {
+      "description": "The validation outcome of the \"if\" subschema controls which of the \"then\" or \"else\" keywords are evaluated.",
+      "allOf": [{ "$ref": "#" }]
+    },
+    "then": {
+      "description": "The \"if\" subschema is used for validation when the \"if\" subschema succeeds.",
+      "allOf": [{ "$ref": "#" }]
+    },
+    "else": {
+      "description": "The \"else\" subschema is used for validation when the \"if\" subschema fails.",
+      "allOf": [{ "$ref": "#" }]
+    },
+    "examples": {
+      "type": "array",
+      "description": "Sample JSON values associated with a particular schema, for the purpose of illustrating usage.",
+      "items": true
+    },
+    "defaultSnippets": {
+      "type": "array",
+      "markdownDescription": "Use the property `defaultSnippets` to specify any number of snippets for the given JSON object\n\n_Visual Studio Code extension_",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "markdownDescription": "`label` will be shown in the completion selection dialog. If no label is provided, a stringified object representation of the snippet will be shown as label instead."
+          },
+          "body": {
+            "markdownDescription": "`body` is the JSON object that is stringified and inserted when the completion is selected by the user. [Snippet syntax](https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax) can be used inside strings literals to define tabstops, placeholders, and variables. If a string starts with `^`, the string content will be inserted as-is, not stringified. You can use this to specify snippets for numbers and booleans."
+          },
+          "bodyText": {
+            "type": "string",
+            "markdownDescription": "`bodyText` is stringified JSON object, which will be used in absence of `body`. Newlines and embedded tabs will be formatted according to the context in which the snippet is inserted."
+          },
+          "description": {
+            "type": "string",
+            "markdownDescription": "`description` will be shown in the completion selection dialog."
+          },
+          "markdownDescription": {
+            "type": "string",
+            "markdownDescription": "If you use `markdownDescription` instead of `description`, your text will be rendered as Markdown."
+          }
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "$ref": {
+      "properties": { "$ref": true, "$comment": true },
+      "additionalProperties": false,
+      "errorMessage": "If `$ref` is present, other properties are ignored"
+    },
+    "exclusiveMaximum": {
+      "patternProperties": {
+        "^(exclusiveMaximum|maximum)$": {
+          "const": null,
+          "errorMessage": "`exclusiveMaximum` and `maximum` are mutually exclusive"
+        }
+      }
+    },
+    "exclusiveMinimum": {
+      "patternProperties": {
+        "^(exclusiveMinimum|minimum)$": {
+          "const": null,
+          "errorMessage": "`exclusiveMinimum` and `minimum` are mutually exclusive"
+        }
+      }
+    }
+  }
+}
